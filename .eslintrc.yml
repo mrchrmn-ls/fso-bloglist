@@ -1,0 +1,30 @@
+env:
+  browser: true
+  commonjs: true
+  es2021: true
+extends: eslint:recommended
+parserOptions:
+  ecmaVersion: 13
+rules:
+  indent:
+    - warn
+    - 2
+  linebreak-style:
+    - warn
+    - unix
+  quotes:
+    - error
+    - double
+  semi:
+    - error
+    - always
+  eqeqeq:
+    - error
+  no-trailing-spaces:
+    - warn
+  object-curly-spacing:
+    - error
+    - always
+  arrow-spacing:
+    - error
+    - { before: true, after: true }
