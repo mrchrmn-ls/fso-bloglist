@@ -1,46 +1,31 @@
-require("dotenv").config();
-
-const http = require("http");
 const express = require("express");
-const app = express();
-const cors = require("cors");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
-const blogSchema = new mongoose.Schema({
-  title: String,
-  author: String,
-  url: String,
-  likes: Number
-});
+const app = express();
 
-const Blog = mongoose.model("Blog", blogSchema);
+const config = require("./utils/config");
+const bloglistRouter = require("./controllers/bloglist");
+const middleware = require("./utils/middleware");
+const log = require("./utils/log");
 
-const MONGODB_URL = process.env.MONGODB_URL;
-mongoose.connect(MONGODB_URL);
+mongoose.connect(config.MONGODB_URL)
+  .then(() => {
+    log.info("connected to MongoDB");
+  })
+  .catch((error) => {
+    log.error("error connecting to MongoDB:", error.message);
+  });
+
 
 app.use(cors());
 app.use(express.json());
 
-app.get("/api/blogs", (_, response) => {
-  Blog
-    .find({})
-    .then(blogs => {
-      response.json(blogs);
-    });
-});
+app.use(middleware.requestLogger);
 
-app.post("/api/blogs", (request, response) => {
-  console.log(request.body);
-  const blog = new Blog(request.body);
+app.use("/api/blogs", bloglistRouter);
 
-  blog
-    .save()
-    .then(result => {
-      response.status(201).json(result);
-    });
-});
+app.use(middleware.unknownEndpoint);
+app.use(middleware.errorHandler);
 
-const PORT = process.env.PORT;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+module.exports = app;
