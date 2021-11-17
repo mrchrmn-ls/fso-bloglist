@@ -42,8 +42,8 @@ describe("when there are blogs in the bloglist", () => {
   });
 
 
-  describe("adding a new bloglist entry", () => {
-    xtest("succeeds with valid fields", async () => {
+  xdescribe("adding a new bloglist entry", () => {
+    test("succeeds with valid fields", async () => {
       const newBlog = {
         title: "My way into programming",
         author: "Marc Hermann",
@@ -64,7 +64,7 @@ describe("when there are blogs in the bloglist", () => {
     });
 
 
-    xtest("without likes defaults likes to zero", async () => {
+    test("without likes defaults likes to zero", async () => {
       const newBlog = {
         title: "My way into programming",
         author: "Marc Hermann",
@@ -94,7 +94,38 @@ describe("when there are blogs in the bloglist", () => {
       const blogsInDB = await helper.getBlogsInDB();
       expect(blogsInDB).toHaveLength(helper.initialBloglist.length);
     });
+  });
 
+
+  xdescribe("deleting a bloglist entry", () => {
+    test("succeeds with status code 204", async () => {
+      const blogToDelete = await helper.getFirstBlog();
+
+      await api.delete(`/api/blogs/${blogToDelete.id}`)
+               .expect(204);
+
+      const remainingBlogs = await helper.getBlogsInDB();
+
+      expect(remainingBlogs).toHaveLength(helper.initialBloglist.length - 1);
+    });
+  });
+
+
+  describe("updating a blog", () => {
+    test("succeeds with 200 and updated data", async () => {
+      const blogToUpdate = await helper.getFirstBlog();
+
+      const updateData = {
+        likes: 99
+      };
+
+      const updated = await api.put(`/api/blogs/${blogToUpdate.id}`)
+                               .send(updateData)
+                               .expect(200)
+                               .expect("Content-Type", /application\/json/);
+
+      expect(updated.body.likes).toBe(99);
+    });
   });
 });
 
