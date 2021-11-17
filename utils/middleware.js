@@ -18,11 +18,18 @@ function errorHandler(err, _, res, next) {
   log.info(err.message);
 
   if (err.name === "CastError") {
-    return res.status(400).send({ error: "malformatted id" });
+    res.status(400).send({ error: "malformatted id" });
+    return null;
   }
 
   if (err.name === "ValidationError") {
-    return res.status(400).json({ error: err.message });
+    res.status(400).json({ error: err.message });
+    return null;
+  }
+
+  if (err.name === "PasswordError") {
+    res.status(400).json({ error: "password must have at least 3 characters" });
+    return null;
   }
 
   next(err);
