@@ -3,8 +3,8 @@ Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hcmMiLCJpZCI6IjYxOTU4MmMyMjM1ZWRhNDg4ZTZlNGVmMCIsImlhdCI6MTYzNzIyMTkxNCwiZXhwIjoxNjM3MjI1NTE0fQ.nzzO2GrJkLGcbYpPOV7ZEa8KaFaXmqYZKKldMjWfvI8
 
 {
-  "title": "There is no way back from learning to code.",
+  "title": "The secret to environment variables.",
   "author": "Marc Hermann",
-  "url": "https://www.tricklabor.com",
-  "likes": 56
+  "url": "https://www.hrmn.dev",
+  "likes": 12
 }
