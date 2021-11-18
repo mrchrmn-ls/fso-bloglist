@@ -25,13 +25,14 @@ mongoose.connect(config.MONGODB_URL)
 app.use(cors());
 app.use(express.json());
 
-app.use(middleware.requestLogger);
+app.use(middleware.logRequests);
+app.use(middleware.extractToken);
 
 app.use("/api/users", usersRouter);
 app.use("/api/login", loginRouter);
 app.use("/api/blogs", bloglistRouter);
 
 app.use(middleware.unknownEndpoint);
-app.use(middleware.errorHandler);
+app.use(middleware.handleErrors);
 
 module.exports = app;

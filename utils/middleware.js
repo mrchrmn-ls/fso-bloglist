@@ -1,6 +1,6 @@
 const log = require("./log");
 
-function requestLogger(req, _, next) {
+function logRequests(req, _, next) {
   log.info("Method:", req.method);
   log.info("Path:", req.path);
   log.info("Bdy:", req.body);
@@ -14,7 +14,7 @@ function unknownEndpoint(_, res) {
   });
 }
 
-function errorHandler(err, _, res, next) {
+function handleErrors(err, _, res, next) {
   log.info(err.message);
 
   if (err.name === "CastError") {
@@ -35,8 +35,19 @@ function errorHandler(err, _, res, next) {
   next(err);
 }
 
+function extractToken(req, _, next) {
+  const authorization = req.get("authorization");
+
+  if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
+    req.token = authorization.substring(7);
+  }
+
+  next();
+}
+
 module.exports = {
-  requestLogger,
+  logRequests,
   unknownEndpoint,
-  errorHandler
+  handleErrors,
+  extractToken
 };
