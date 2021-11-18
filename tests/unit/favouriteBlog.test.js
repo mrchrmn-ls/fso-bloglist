@@ -1,4 +1,4 @@
-const mostLikes = require("../utils/list_helper").mostLikes;
+const favouriteBlog = require("../../utils/list_helper").favouriteBlog;
 
 xdescribe("Total likes", () => {
   const listWithOneBlog = [
@@ -65,21 +65,23 @@ xdescribe("Total likes", () => {
 
   const emptyList = [];
 
-  test("When list has only one blog", () => {
-    expect(mostLikes(listWithOneBlog)).toEqual({
+  test("When list has only one blog that one is the favourite blog", () => {
+    expect(favouriteBlog(listWithOneBlog)).toEqual({
+      title: "Go To Statement Considered Harmful",
       author: "Edsger W. Dijkstra",
-      likes: 5
+      likes: 5,
     });
   });
 
   test("Longer list", () => {
-    expect(mostLikes(blogs)).toEqual({
+    expect(favouriteBlog(blogs)).toEqual({
+      title: "Canonical string reduction",
       author: "Edsger W. Dijkstra",
-      likes: 17
+      likes: 12,
     });
   });
 
   test("Empty list", () => {
-    expect(mostLikes(emptyList)).toEqual({});
+    expect(favouriteBlog(emptyList)).toEqual({});
   });
 });

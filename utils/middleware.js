@@ -48,11 +48,19 @@ function extractToken(req, _, next) {
 }
 
 async function getUser(req, res, next) {
+  if (!req.token) {
+    res.status(401).json({
+      error: "token missing"
+    });
+
+    return null;
+  }
+
   const decodedToken = jwt.verify(req.token, process.env.SECRET);
 
-  if (!req.token || !decodedToken.id) {
+  if (!decodedToken.id) {
     res.status(401).json({
-      error: "token missing or invalid"
+      error: "token invalid"
     });
 
     return null;

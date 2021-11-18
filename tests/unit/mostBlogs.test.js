@@ -1,4 +1,4 @@
-const mostBlogs = require("../utils/list_helper").mostBlogs;
+const mostBlogs = require("../../utils/list_helper").mostBlogs;
 
 xdescribe("Total likes", () => {
   const listWithOneBlog = [
