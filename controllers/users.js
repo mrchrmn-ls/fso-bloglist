@@ -11,6 +11,12 @@ usersRouter.get("/", async (_, res) => {
 });
 
 
+usersRouter.get("/:username", async (req, res) => {
+  const user = await User.findOne({ "username": req.params.username });
+  res.status(200).json(user);
+});
+
+
 usersRouter.post("/", async (req, res) => {
   if (!req.body.password || req.body.password.length < 3) {
     let error = new Error();
